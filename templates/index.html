@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feed</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h2>Stories</h2>
+    <div class="stories">
+        {% for story in stories %}
+            {% if story.image %}
+                <img src="/static/uploads/images/{{ story.image }}" width="100">
+            {% elif story.video %}
+                <video width="100" controls>
+                    <source src="/static/uploads/videos/{{ story.video }}">
+                </video>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <hr>
+    <h2>Feed</h2>
+    {% for post in posts %}
+        {% include 'post_card.html' %}
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Post</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>Create New Post</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <textarea name="content" placeholder="What's on your mind?" required></textarea><br>
+        <label>Image:</label> <input type="file" name="image"><br>
+        <label>Video:</label> <input type="file" name="video"><br>
+        <button type="submit">Post</button>
+    </form>
+</body>
+</html>

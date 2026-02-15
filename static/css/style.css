@@ -1,0 +1,7 @@
+body { font-family: Arial; max-width: 900px; margin: auto; }
+nav a { margin-right: 10px; }
+.stories img, .stories video { margin-right: 5px; border: 1px solid #ccc; }
+.post-card { border:1px solid #ccc; padding:10px; margin-bottom:10px; }
+input, textarea { width: 100%; padding:5px; margin-bottom:5px; }
+button { padding:5px 10px; }
+.comments { margin-left:20px; font-size:14px; }

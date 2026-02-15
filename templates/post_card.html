@@ -1,0 +1,25 @@
+<div class="post-card">
+    <p><b>{{ post.author.username }}</b> - {{ post.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+    <p>{{ post.content }}</p>
+    {% if post.image %}
+        <img src="/static/uploads/images/{{ post.image }}" width="300">
+    {% endif %}
+    {% if post.video %}
+        <video width="300" controls>
+            <source src="/static/uploads/videos/{{ post.video }}">
+        </video>
+    {% endif %}
+    <p>
+        <a href="/like/{{ post.id }}">Like ({{ post.likes|length }})</a>
+    </p>
+    <form action="/comment/{{ post.id }}" method="POST">
+        <input type="text" name="comment" placeholder="Add comment" required>
+        <button type="submit">Comment</button>
+    </form>
+    <div class="comments">
+        {% for c in post.comments %}
+            {% include 'comment_card.html' %}
+        {% endfor %}
+    </div>
+</div>
+<hr>

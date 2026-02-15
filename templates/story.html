@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Story</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>Create New Story</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label>Image:</label> <input type="file" name="image"><br>
+        <label>Video:</label> <input type="file" name="video"><br>
+        <button type="submit">Post Story</button>
+    </form>
+</body>
+</html>
