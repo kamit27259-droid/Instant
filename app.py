@@ -64,3 +64,6 @@ class Follow(db.Model):
 @app.route('/')
 def index():
     return "Working"
+
+with app.app_context():
+    db.create_all()
