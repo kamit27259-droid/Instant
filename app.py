@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from datetime import datetime, timedelta
 from flask_login import login_required, current_user
+from flask import request
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -106,48 +107,41 @@ def logout():
     session.pop('user_id', None)
     return redirect('/login')
 
-@app.route('/post', methods=['GET','POST'])
+@app.route("/post", methods=["GET", "POST"])
+@login_required
 def post():
-    if 'user_id' not in session:
-        return redirect('/login')
-    if request.method == 'POST':
-        content = request.form['content']
-        image_file = request.files.get('image')
-        video_file = request.files.get('video')
-        image_filename = ""
-        video_filename = ""
-        if image_file:
-            image_filename = image_file.filename
-            image_file.save(os.path.join(app.config['UPLOAD_FOLDER_IMAGES'], image_filename))
-        if video_file:
-            video_filename = video_file.filename
-            video_file.save(os.path.join(app.config['UPLOAD_FOLDER_VIDEOS'], video_filename))
-        new_post = Post(content=content, image=image_filename, video=video_filename, user_id=session['user_id'])
+    if request.method == "POST":
+        caption = request.form.get("caption")
+
+        new_post = Post(
+            caption=caption,
+            user_id=current_user.id
+        )
+
         db.session.add(new_post)
         db.session.commit()
-        return redirect('/')
-    return render_template('post.html')
 
-@app.route('/story', methods=['GET','POST'])
+        return redirect("/")
+
+    return render_template("post.html")
+
+@app.route("/story", methods=["GET", "POST"])
+@login_required
 def story():
-    if 'user_id' not in session:
-        return redirect('/login')
-    if request.method == 'POST':
-        image_file = request.files.get('image')
-        video_file = request.files.get('video')
-        image_filename = ""
-        video_filename = ""
-        if image_file:
-            image_filename = image_file.filename
-            image_file.save(os.path.join(app.config['UPLOAD_FOLDER_IMAGES'], image_filename))
-        if video_file:
-            video_filename = video_file.filename
-            video_file.save(os.path.join(app.config['UPLOAD_FOLDER_VIDEOS'], video_filename))
-        new_story = Story(image=image_filename, video=video_filename, user_id=session['user_id'])
+    if request.method == "POST":
+        content = request.form.get("content")
+
+        new_story = Story(
+            content=content,
+            user_id=current_user.id
+        )
+
         db.session.add(new_story)
         db.session.commit()
-        return redirect('/')
-    return render_template("story.html", story=story, user=current_user)
+
+        return redirect("/")
+
+    return render_template("story.html")
 
 @app.route('/like/<int:post_id>')
 def like(post_id):
