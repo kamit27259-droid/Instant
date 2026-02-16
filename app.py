@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
 from datetime import datetime, timedelta
-from flask_login import current_user
+from flask_login import login_required, current_user
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -192,15 +192,27 @@ def unfollow(user_id):
     return redirect(f'/profile/{user_id}')
 
 @app.route('/profile/<int:user_id>')
+@login_required
 def profile(user_id):
     user = User.query.get(user_id)
-    posts = Post.query.filter_by(user_id=user_id).order_by(Post.timestamp.desc()).all()
-    current_user_id = session.get('user_id')
-    is_following = Follow.query.filter_by(follower_id=current_user_id, following_id=user_id).first() is not None
+    posts = Post.query.filter_by(user_id=user.id).order_by(Post.timestamp.desc()).all()
+
+    is_following = Follow.query.filter_by(
+        follower_id=current_user.id,
+        following_id=user.id
+    ).first() is not None
+
     followers_count = user.followers.count()
     following_count = user.following.count()
-    return render_template('profile.html', user=user, posts=posts, is_following=is_following,
-                           followers_count=followers_count, following_count=following_count)
+
+    return render_template(
+        'profile.html',
+        user=user,
+        posts=posts,
+        is_following=is_following,
+        followers_count=followers_count,
+        following_count=following_count
+    )
 
 if __name__ == '__main__':
     # Ensure upload folders exist

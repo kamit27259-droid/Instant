@@ -5,7 +5,7 @@
 
     {% if current_user.is_authenticated %}
          <a href="/profile/
-         {{current_user.id}}">Profile</a> |
+         {{current_user .id}}">Profile</a> |
          <a href="/logout">Logout</a>
     {% endif %}
 
