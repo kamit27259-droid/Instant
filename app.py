@@ -212,5 +212,8 @@ if __name__ == '__main__':
         db.create_all()
 
     # Run Flask
-    if __name__ == '__main__':
-      app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    import os
+
+if __name__ == "_main_":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
