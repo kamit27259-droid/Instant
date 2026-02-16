@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
 from datetime import datetime, timedelta
+from flask_login import current_user
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -146,7 +147,7 @@ def story():
         db.session.add(new_story)
         db.session.commit()
         return redirect('/')
-    return render_template('story.html')
+    return render_template("story.html", story=story, user=current_user)
 
 @app.route('/like/<int:post_id>')
 def like(post_id):
